@@ -1,3 +1,4 @@
+import java.util.*;
 public class Lab2Test {
   SinglyLinkedList <Integer> case1Answer = new SinglyLinkedList<Integer>();
   SinglyLinkedList <Integer> case2Answer = new SinglyLinkedList<Integer>();

@@ -1,5 +1,4 @@
 import java.util.*;
-
 public class SinglyLinkedList<E extends Comparable<E>> {
     private Node<E> head = null;
     private Node<E> tail = null;
@@ -100,9 +99,64 @@ public class SinglyLinkedList<E extends Comparable<E>> {
     }
 
     // write your codes here
-    public void swap(){
-        
+    public void swap() {
+        if (size <= 1) {
+            return;
+        }
 
+        //store in og order
+        ArrayList<Node<E>> nodes = new ArrayList<>();
+
+        Node<E> current = head;
+        while (current != null) {
+            nodes.add(current);
+            current = current.getNext();
+        }
+
+        // make it sorted
+        ArrayList<Node<E>> sorted = new ArrayList<>(nodes);
+
+        sorted.sort((a, b) -> 
+            a.getElement().compareTo(b.getElement())
+        );
+
+        // track 
+        HashMap<Node<E>, Integer> positions = new HashMap<>();
+
+        for (int i = 0; i < nodes.size(); i++) {
+            positions.put(nodes.get(i), i);
+        }
+
+        // swap smallest with largest,
+        // second smallest with second largest, etc.
+        for (int i = 0; i < sorted.size() / 2; i++) {
+
+            Node<E> smallest = sorted.get(i);
+            Node<E> largest = sorted.get(sorted.size() - 1 - i);
+
+            int smallestPosition = positions.get(smallest);
+            int largestPosition = positions.get(largest);
+
+            // swap their positions in the list
+            nodes.set(smallestPosition, largest);
+            nodes.set(largestPosition, smallest);
+
+            // update their positions
+            positions.put(smallest, largestPosition);
+            positions.put(largest, smallestPosition);
+        }
+
+        // then reconnect w all nodes
+        for (int i = 0; i < nodes.size() - 1; i++) {
+            nodes.get(i).setNext(nodes.get(i + 1));
+        }
+
+        // last node points to null
+        nodes.get(nodes.size() - 1).setNext(null);
+
+        // update head and tail
+        head = nodes.get(0);
+        tail = nodes.get(nodes.size() - 1);
     }
    
 }
